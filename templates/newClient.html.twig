@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <div class="mt-5 d-flex justify-content-center">
+        <div class="w-50">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.registrationNumber) }}
+            <div style="border: #0e192b 2px solid;padding: 13px; margin: 5px">
+                {{ form_row(form.commandes) }}
+                <a href="#" id="add_commande" class="btn btn-default">Ajouter une commande</a>
+            </div>
+            {{ form_row(form.Ajouter) }}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $container = $('div#client_commandes');
+            var index = $container.find(':input').length;
+            $('#add_commande').click(function(e){
+               addCommande($container);
+               e.preventDefault();
+               return false;
+            });
+            if (index === 0){
+                addCommande($container);
+            } else {
+
+                $container.children('div').each(function () {
+                })
+            }
+            function addCommande($container){
+                var template = $container.attr('data-prototype')
+                    .replace(/__name__label__/g,'Commande n°' +(index+1))
+                    .replace(/__name__/g,index);
+                var $prototype = $(template);
+                if (index !==0) {
+                    addDeleteLink($prototype);
+                }
+                $container.append($prototype);
+                index++;
+            }
+            function addDeleteLink($prototype) {
+                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+                $prototype.append($deleteLink);
+                    $deleteLink.click(function (e) {
+                        $prototype.remove();
+                        index--;
+                        e.preventDefault();
+                        return false;
+                    });
+            }
+        });
+    </script>
+{% endblock %}
